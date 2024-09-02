@@ -1,9 +1,10 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     entry: './src/app.ts',
-    mode: process.env.NODE_ENV || 'development',
-    devtool: process.env.NODE_ENV === 'production' ? 'source-map' : 'eval-source-map',
+    mode: 'production',
+    devtool: 'source-map',
     module: {
         rules: [
             {
@@ -17,10 +18,20 @@ module.exports = {
         extensions: ['.tsx', '.ts', '.js'],
     },
     output: {
-        filename: 'bundle.js',
+        filename: '[name].bundle.js',
         path: path.resolve(__dirname, 'public/dist'),
+        clean: true, // Ensure output directory is cleaned between builds
     },
     optimization: {
-        minimize: process.env.NODE_ENV === 'production',
+        minimize: true,
+        splitChunks: {
+            chunks: 'all',
+        },
     },
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: './src/index.html',
+            filename: '../index.html',
+        }),
+    ],
 };
