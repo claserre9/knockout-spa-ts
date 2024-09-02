@@ -27,12 +27,14 @@
   },
   "dependencies": {
     "@types/bootstrap": "^5.2.10",
+    "@types/uuid": "^10.0.0",
     "axios": "^1.7.5",
     "boostrap": "^2.0.0",
     "bootstrap": "^5.3.3",
     "express": "^4.19.2",
     "jquery": "^3.7.1",
     "knockout": "^3.5.1",
-    "sammy": "^0.7.6"
+    "sammy": "^0.7.6",
+    "uuid": "^10.0.0"
   }
 }
