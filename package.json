@@ -17,7 +17,13 @@
     "@types/knockout": "^3.4.77",
     "@types/node": "^22.5.1",
     "@types/sammy": "^0.0.25",
+    "autoprefixer": "^10.4.20",
+    "css-loader": "^7.1.2",
     "html-webpack-plugin": "^5.6.0",
+    "postcss-loader": "^8.1.1",
+    "sass": "^1.77.8",
+    "sass-loader": "^16.0.1",
+    "style-loader": "^4.0.0",
     "ts-loader": "^9.5.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4",
@@ -26,6 +32,7 @@
     "webpack-dev-server": "^5.0.4"
   },
   "dependencies": {
+    "@popperjs/core": "^2.11.8",
     "@types/bootstrap": "^5.2.10",
     "@types/uuid": "^10.0.0",
     "axios": "^1.7.5",

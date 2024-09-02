@@ -23,11 +23,11 @@ export default class AlertViewModel extends BaseViewModel {
         `
     }
 
-    private clearMessage(){
+    private clearMessage() {
         this.message("");
     }
 
-    private getAlertLevel(type : string) : string {
+    private getAlertLevel(type: string): string {
         switch (type) {
             case "info":
                 return "alert-info";
@@ -42,6 +42,33 @@ export default class AlertViewModel extends BaseViewModel {
             default:
                 return "alert-info";
         }
+    }
+
+
+    public show(message: string, type: string = 'info', delayInSec: number = 0) {
+        this.message(message);
+        this.type(type);
+        if (delayInSec > 0) {
+            setTimeout(() => {
+                this.clearMessage()
+            }, delayInSec * 1000)
+        }
+    }
+
+    public info(message: string, delayInSec: number = 0) {
+        this.show(message, 'info', delayInSec);
+    }
+
+    public success(message: string, delayInSec: number = 0) {
+        this.show(message, 'success', delayInSec);
+    }
+
+    public warning(message: string, delayInSec: number = 0) {
+        this.show(message, 'warning', delayInSec);
+    }
+
+    public danger(message: string, delayInSec: number = 0) {
+        this.show(message, 'danger', delayInSec);
     }
 
 }

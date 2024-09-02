@@ -2,6 +2,7 @@ import BaseViewModel from "./BaseViewModel";
 import {observable, observableArray} from "knockout";
 import Contact from "../models/Contact";
 import AlertViewModel from "./AlertViewModel";
+import ToastViewModel from "./ToastViewModel";
 
 
 export default class ContactListViewModel extends BaseViewModel{
@@ -97,7 +98,7 @@ export default class ContactListViewModel extends BaseViewModel{
     <table class="table">
         <thead>
             <tr>
-                <th scope="col">Id</th>
+                <!--<th scope="col">Id</th>-->
                 <th scope="col">First Name</th>
                 <th scope="col">Last Name</th>
                 <th scope="col">Phone Number</th>
@@ -107,7 +108,7 @@ export default class ContactListViewModel extends BaseViewModel{
         </thead>
         <tbody data-bind="foreach:contacts">
             <tr>
-                <td data-bind="text:id"></td>
+                <!--<td data-bind="text:id"></td>-->
                 <td data-bind="text:firstName"></td>
                 <td data-bind="text:lastName"></td>
                 <td data-bind="text:phoneNumber"></td>
@@ -136,6 +137,8 @@ export default class ContactListViewModel extends BaseViewModel{
         this.contacts.push(new Contact(firstName, lastName, email, phoneNumber));
         this.clearFormData(formElement)
         this.closeModal('addContactModal');
+        let toastViewModel = this.observableFrom('app-toast') as ToastViewModel;
+        toastViewModel.show("Contact added", 2)
     }
 
     public showEditContact(contact : Contact){
@@ -171,12 +174,7 @@ export default class ContactListViewModel extends BaseViewModel{
         if(answer){
             contacts.remove(contact);
             let messageViewModel = this.observableFrom('app-message') as AlertViewModel;
-            messageViewModel.message("Contact successfully removed");
-            messageViewModel.type("success");
-            setTimeout(() => {
-                messageViewModel.message("");
-            }, 3000)
-
+            messageViewModel.success("Contact successfully removed", 3);
         }
 
     }
