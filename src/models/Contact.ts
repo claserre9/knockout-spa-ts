@@ -9,13 +9,15 @@ export default class Contact {
     private readonly _email: KnockoutObservable<string>;
     private readonly _phoneNumber: KnockoutObservable<string>;
     private readonly _id: KnockoutObservable<string>;
+    private readonly _isChecked: KnockoutObservable<boolean>;
 
-    constructor(firstName: string ='', lastName: string  ='' , email: string  ='' , phoneNumber: string  ='') {
+    constructor(firstName: string ='', lastName: string  ='' , email: string  ='' , phoneNumber: string  ='', isChecked: boolean = false) {
         this._firstName = observable(firstName);
         this._lastName = observable(lastName);
         this._email = observable(email);
         this._phoneNumber = observable(phoneNumber);
         this._id = observable(uuidv4());
+        this._isChecked = observable(isChecked);
     }
 
     public getFullName(): string {
@@ -57,6 +59,14 @@ export default class Contact {
 
     set phoneNumber(value: string) {
         this._phoneNumber(value);
+    }
+
+    set isChecked(value: boolean) {
+        this._isChecked(value);
+    }
+
+    get isChecked(): boolean {
+        return this._isChecked()
     }
 
     reset(){

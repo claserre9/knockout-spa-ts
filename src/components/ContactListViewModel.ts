@@ -1,5 +1,5 @@
 import BaseViewModel from "./BaseViewModel";
-import {observable, observableArray} from "knockout";
+import {computed, observable, observableArray, utils} from "knockout";
 import Contact from "../models/Contact";
 import AlertViewModel from "./AlertViewModel";
 import ToastViewModel from "./ToastViewModel";
@@ -8,19 +8,27 @@ import ToastViewModel from "./ToastViewModel";
 export default class ContactListViewModel extends BaseViewModel{
     public contacts : KnockoutObservableArray<Contact>;
     public selectedContact : KnockoutObservable<Contact>
+    public countIsChecked : KnockoutComputed<number>;
 
 
     constructor() {
         super();
         this.contacts = observableArray([
-            new Contact("John", "Doe", "johndoe@gmail.com", "123456789"),
+            new Contact("John", "Doe", "johndoe@gmail.com", "123456789", true),
         ])
+        this.countIsChecked = computed(() => {
+            return (utils.arrayFilter(this.contacts() as Contact[], (contact: Contact) => contact.isChecked)).length
+        })
         this.selectedContact = observable(new Contact());
 
         this.template = `
 <div class="container">
 
 <button type="button" class="btn btn-primary my-4" data-bs-toggle="modal" data-bs-target="#addContactModal">Add new contact</button>
+<!-- ko if: countIsChecked -->
+<button type="button" class="btn btn-danger my-4" 
+    data-bind="text: 'Delete ' + countIsChecked() + ' selected contact(s)', click: deleteSelectedContact  ">Delete</button>
+<!-- /ko -->
 
 <div class="modal fade" id="addContactModal" tabindex="-1" aria-labelledby="addContactModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -98,7 +106,7 @@ export default class ContactListViewModel extends BaseViewModel{
     <table class="table">
         <thead>
             <tr>
-                <!--<th scope="col">Id</th>-->
+                <th scope="col"><input class="form-check-input" type="checkbox" data-bind="event:{ change : onChangeCheckBox }"></th>
                 <th scope="col">First Name</th>
                 <th scope="col">Last Name</th>
                 <th scope="col">Phone Number</th>
@@ -108,7 +116,7 @@ export default class ContactListViewModel extends BaseViewModel{
         </thead>
         <tbody data-bind="foreach:contacts">
             <tr>
-                <!--<td data-bind="text:id"></td>-->
+                <td><input class="form-check-input" type="checkbox" data-bind="checked: isChecked"></td>
                 <td data-bind="text:firstName"></td>
                 <td data-bind="text:lastName"></td>
                 <td data-bind="text:phoneNumber"></td>
@@ -207,5 +215,21 @@ export default class ContactListViewModel extends BaseViewModel{
                 element.value = '';
             }
         }
+    }
+
+    public onChangeCheckBox(data: any, event: Event) {
+        const {checked} = event.target as HTMLInputElement;
+        const {contacts} = data as ContactListViewModel;
+        utils.arrayForEach(contacts() as Contact[], (contact) => {
+            contact.isChecked = checked;
+        })
+    }
+
+    public deleteSelectedContact(data: any){
+        const {contacts} = data as ContactListViewModel;
+        const notSelectedContacts = utils.arrayFilter(contacts() as Contact[], (contact) => {
+            return !contact.isChecked;
+        })
+        contacts(notSelectedContacts)
     }
 }
