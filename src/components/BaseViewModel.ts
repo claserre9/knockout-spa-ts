@@ -2,10 +2,31 @@ import {applyBindings, cleanNode, dataFor} from 'knockout';
 
 export default class BaseViewModel {
 
-    public template: string | undefined;
+    public template: string | undefined | null
+    public context : any
+    public selector: any
 
-    render(selector: string = 'app'): void {
+    render(selector: string = 'app'): this {
+        this.selector = selector;
         this.load(selector);
+        return this;
+    }
+
+    destroy(){
+        const element = document.getElementById(this.selector);
+        if (element) {
+            cleanNode(element);
+            while (element.firstChild) {
+                element.removeChild(element.firstChild);
+            }
+        } else {
+            console.error(`Element with id "${this.selector}" not found.`);
+        }
+    }
+
+    setContext(context: any): this {
+        this.context = context;
+        return this;
     }
 
     observableFrom(selector: string) {

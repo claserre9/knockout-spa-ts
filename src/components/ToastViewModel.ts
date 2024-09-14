@@ -12,7 +12,7 @@ export default class ToastViewModel extends BaseViewModel{
         this.template = `
 <div aria-live="polite" aria-atomic="true" class="position-relative">
     <div class="toast-container top-0 end-0 p-3">
-        <div id="toast" class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
+        <div id="toast" class="toast align-items-center text-bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="d-flex">
                 <div class="toast-body" data-bind="text: message"></div>
                 <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>

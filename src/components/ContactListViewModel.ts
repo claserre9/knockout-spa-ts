@@ -3,10 +3,11 @@ import {computed, observable, observableArray, utils} from "knockout";
 import Contact from "../models/Contact";
 import AlertViewModel from "./AlertViewModel";
 import ToastViewModel from "./ToastViewModel";
+import {clearFormData, setFormData} from "./Utilities";
 
 
 export default class ContactListViewModel extends BaseViewModel{
-    public contacts : KnockoutObservableArray<Contact>;
+    public contacts : KnockoutObservableArray<Contact> | KnockoutObservableArray<never>;
     public selectedContact : KnockoutObservable<Contact>
     public countIsChecked : KnockoutComputed<number>;
 
@@ -14,7 +15,7 @@ export default class ContactListViewModel extends BaseViewModel{
     constructor() {
         super();
         this.contacts = observableArray([
-            new Contact("John", "Doe", "johndoe@gmail.com", "123456789", true),
+            // new Contact("John", "Doe", "johndoe@gmail.com", "123456789", true),
         ])
         this.countIsChecked = computed(() => {
             return (utils.arrayFilter(this.contacts() as Contact[], (contact: Contact) => contact.isChecked)).length
@@ -139,11 +140,24 @@ export default class ContactListViewModel extends BaseViewModel{
 
     public addContact(formElement: HTMLFormElement) {
         const formData: { [key: string]: any } = {};
-        this.setFormData(formElement, formData);
+        setFormData(formElement, formData);
         const {firstName, lastName, email, phoneNumber } = formData
+
+        const existingContact = utils.arrayFilter(this.contacts() as Contact[], (contact) => {
+            return contact.phoneNumber == phoneNumber || contact.email == email;
+        })
+
+        if(existingContact.length > 0){
+            const messageViewModel = this.observableFrom('app-message') as AlertViewModel;
+            messageViewModel.danger("Contact with same phone or email already exists", 3);
+            clearFormData(formElement)
+            this.closeModal('addContactModal');
+            return
+        }
+
         // @ts-ignore
         this.contacts.push(new Contact(firstName, lastName, email, phoneNumber));
-        this.clearFormData(formElement)
+        clearFormData(formElement)
         this.closeModal('addContactModal');
         let toastViewModel = this.observableFrom('app-toast') as ToastViewModel;
         toastViewModel.show("Contact added", 2)
@@ -155,10 +169,10 @@ export default class ContactListViewModel extends BaseViewModel{
 
     public editContact(formElement: HTMLFormElement){
         const formData: { [key: string]: any } = {};
-        this.setFormData(formElement, formData);
+        setFormData(formElement, formData);
         this.updateContact(formData);
 
-        this.clearFormData(formElement)
+        clearFormData(formElement)
         this.closeModal('editContactModal');
         this.selectedContact(new Contact())
     }
@@ -197,25 +211,7 @@ export default class ContactListViewModel extends BaseViewModel{
         }
     }
 
-    private setFormData(formElement: HTMLFormElement, formData: { [p: string]: any }) {
-        for (let i = 0; i < formElement.elements.length; i++) {
-            const element = formElement.elements[i] as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
 
-            if (element.name) {
-                formData[element.name] = element.value;
-            }
-        }
-    }
-
-    private clearFormData(formElement: HTMLFormElement) {
-        for (let i = 0; i < formElement.elements.length; i++) {
-            const element = formElement.elements[i] as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
-
-            if (element.name) {
-                element.value = '';
-            }
-        }
-    }
 
     public onChangeCheckBox(data: any, event: Event) {
         const {checked} = event.target as HTMLInputElement;

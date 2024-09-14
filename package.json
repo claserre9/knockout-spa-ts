@@ -16,7 +16,6 @@
     "@types/jquery": "^3.5.30",
     "@types/knockout": "^3.4.77",
     "@types/node": "^22.5.1",
-    "@types/sammy": "^0.0.25",
     "autoprefixer": "^10.4.20",
     "css-loader": "^7.1.2",
     "html-webpack-plugin": "^5.6.0",
@@ -34,6 +33,7 @@
   "dependencies": {
     "@popperjs/core": "^2.11.8",
     "@types/bootstrap": "^5.2.10",
+    "@types/page": "^1.11.9",
     "@types/uuid": "^10.0.0",
     "axios": "^1.7.5",
     "boostrap": "^2.0.0",
@@ -41,7 +41,7 @@
     "express": "^4.19.2",
     "jquery": "^3.7.1",
     "knockout": "^3.5.1",
-    "sammy": "^0.7.6",
+    "page": "^1.11.6",
     "uuid": "^10.0.0"
   }
 }
