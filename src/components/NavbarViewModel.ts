@@ -4,7 +4,7 @@ export default class NavbarViewModel extends BaseViewModel{
     constructor() {
         super();
         this.template = `
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
     <!-- Search Bar -->
     <form class="d-flex">
