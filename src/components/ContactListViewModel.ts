@@ -4,26 +4,26 @@ import Contact from "../models/Contact";
 import AlertViewModel from "./AlertViewModel";
 import ToastViewModel from "./ToastViewModel";
 import {clearFormData, setFormData} from "./Utilities";
-
+import {contacts as contactList} from "../data/contacts" ;
+import SpinnerViewModel from "./SpinnerViewModel";
 
 export default class ContactListViewModel extends BaseViewModel{
-    public contacts : KnockoutObservableArray<Contact> | KnockoutObservableArray<never>;
+    public contacts : KnockoutObservableArray<Contact> | KnockoutObservableArray<never> = observableArray([]);
     public selectedContact : KnockoutObservable<Contact>
     public countIsChecked : KnockoutComputed<number>;
 
 
     constructor() {
         super();
-        this.contacts = observableArray([
-            // new Contact("John", "Doe", "johndoe@gmail.com", "123456789", true),
-        ])
+        this.loadAndDisplayContacts();
+
         this.countIsChecked = computed(() => {
             return (utils.arrayFilter(this.contacts() as Contact[], (contact: Contact) => contact.isChecked)).length
         })
         this.selectedContact = observable(new Contact());
 
         this.template = `
-<div class="container">
+<div id="contact-list" class="container">
 
 <button type="button" class="btn btn-primary my-4" data-bs-toggle="modal" data-bs-target="#addContactModal">Add new contact</button>
 <!-- ko if: countIsChecked -->
@@ -227,5 +227,38 @@ export default class ContactListViewModel extends BaseViewModel{
             return !contact.isChecked;
         })
         contacts(notSelectedContacts)
+    }
+
+    public loadAndDisplayContacts() {
+        const spinner = this.observableFrom('app-spinner') as SpinnerViewModel;
+        spinner.showLoading = true;
+        if (contactList.length > 100) {
+            setTimeout(() => {
+                this.loadContacts();
+                spinner.showLoading = false;
+            }, 5000);
+        } else {
+            this.loadContacts();
+            spinner.showLoading = false;
+        }
+    }
+
+    public loadContacts(){
+        contactList.forEach((contact) => {
+            const {firstName, lastName, email, phoneNumber} = contact
+            let tempContact = new Contact(firstName, lastName, email, phoneNumber);
+            // @ts-ignore
+            this.contacts.push(tempContact);
+        })
+    }
+
+    public fetchContacts(): Contact[] {
+        let contacts: Contact[] = []
+        contactList.forEach((contact) => {
+            const {firstName, lastName, email, phoneNumber} = contact
+            contacts.push(new Contact(firstName, lastName, email, phoneNumber))
+        })
+
+        return contacts
     }
 }

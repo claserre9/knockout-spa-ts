@@ -87,7 +87,6 @@ export default class RegisterViewModel extends BaseViewModel{
         const formData: { [key: string]: any } = {};
         setFormData(formElement, formData);
         const {username, email, password, confirmPassword } = formData
-        console.log(username, email, password, confirmPassword);
 
         if(password != confirmPassword){
             const messageViewModel = this.observableFrom('app-message') as AlertViewModel;

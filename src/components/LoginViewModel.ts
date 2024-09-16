@@ -39,13 +39,15 @@ export default class LoginViewModel extends BaseViewModel{
         const formData: { [key: string]: any } = {};
         setFormData(formElement, formData);
         const {email, password} = formData
-        console.log(email, password);
 
         const storedUserObj = JSON.parse(<string>localStorage.getItem('clever-app-user')) as {email: string, password: string};
 
         if(storedUserObj.email == email){
             //create cookie name 'clever-app-user'
-            document.cookie = `clever-app-user=${email}; path=/`;
+            const date = new Date();
+            date.setDate(date.getDate() + 1);
+            document.cookie = `clever-app-user=${email}; path=/; expires=${date.toUTCString()}`;
+
             page.redirect("/contact");
         }else{
             const messageViewModel = this.observableFrom('app-message') as AlertViewModel;
