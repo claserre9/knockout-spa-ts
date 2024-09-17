@@ -4,7 +4,8 @@ const autoprefixer = require('autoprefixer')
 
 module.exports = {
 	entry: './src/app.ts',
-	mode: 'production',
+	mode: 'development',
+	devtool: 'cheap-module-source-map',
 	module: {
 		rules: [
 			{

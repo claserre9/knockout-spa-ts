@@ -117,14 +117,14 @@ export default class ContactListViewModel extends BaseViewModel{
         </thead>
         <tbody data-bind="foreach:contacts">
             <tr>
-                <td><input class="form-check-input" type="checkbox" data-bind="checked: isChecked"></td>
+                <td><input class="form-check-input" type="checkbox" data-bind="checked: isChecked, event: {change : $parent.onCheckedItemChange}"></td>
                 <td data-bind="text:firstName"></td>
                 <td data-bind="text:lastName"></td>
                 <td data-bind="text:phoneNumber"></td>
                 <td data-bind="text:email"></td>
                 <td>
-                    <button class="btn btn-sm btn-warning" type="button" data-bind="click: function(){$parent.showEditContact($data)}" data-bs-toggle="modal" data-bs-target="#editContactModal">Edit</button>
-                    <button class="btn btn-sm btn-danger" type="button" data-bind="click: function(){$parent.deleteContact($data, $parent.contacts)}">Delete</button>
+                    <button class="btn btn-sm btn-warning" type="button" data-bind="click: function(){$parent.showEditContact($data)}" data-bs-toggle="modal" data-bs-target="#editContactModal"><i class="bi bi-pencil"></i></button>
+                    <button class="btn btn-sm btn-danger" type="button" data-bind="click: function(){$parent.deleteContact($data, $parent.contacts)}"><i class="bi bi-trash"></i></button>
                 </td>
             </tr>  
         </tbody>
@@ -212,7 +212,6 @@ export default class ContactListViewModel extends BaseViewModel{
     }
 
 
-
     public onChangeCheckBox(data: any, event: Event) {
         const {checked} = event.target as HTMLInputElement;
         const {contacts} = data as ContactListViewModel;
@@ -236,7 +235,7 @@ export default class ContactListViewModel extends BaseViewModel{
             setTimeout(() => {
                 this.loadContacts();
                 spinner.showLoading = false;
-            }, 5000);
+            }, 1000);
         } else {
             this.loadContacts();
             spinner.showLoading = false;
@@ -260,5 +259,18 @@ export default class ContactListViewModel extends BaseViewModel{
         })
 
         return contacts
+    }
+
+    public onCheckedItemChange(data: any, event: Event) {
+
+        console.log(this.countIsChecked());
+
+        if(this.countIsChecked.length > 0 && this.countIsChecked.length < this.contacts.length){
+            // @ts-ignore
+            event.target.indeterminate = true
+        }else if(this.countIsChecked()) {
+            // @ts-ignore
+            event.target.indeterminate = false
+        }
     }
 }

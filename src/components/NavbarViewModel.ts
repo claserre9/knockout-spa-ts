@@ -1,8 +1,6 @@
 import BaseViewModel from "./BaseViewModel";
 import ContactListViewModel from "./ContactListViewModel";
-import {utils} from "knockout";
 import Contact from "../models/Contact";
-import {contacts} from "../data/contacts";
 
 export default class NavbarViewModel extends BaseViewModel{
     constructor() {
@@ -33,22 +31,20 @@ export default class NavbarViewModel extends BaseViewModel{
         const { value } = event.target as HTMLInputElement;
         const contactListViewModel = this.observableFrom('contact-list') as ContactListViewModel;
         const contacts = contactListViewModel.contacts;
+        const searchedContacts = this.searchContacts(contactListViewModel, value);
+        contacts([])
+        contacts(searchedContacts);
 
+    }
 
-
-        if (value === "") {
-            contactListViewModel.loadAndDisplayContacts()
-
-        } else {
-            const searchedContacts = contactListViewModel.fetchContacts().filter((contact: Contact) => {
-                return (
-                    contact.firstName.toLowerCase().includes(value.toLowerCase()) ||
-                    contact.lastName.toLowerCase().includes(value.toLowerCase()) ||
-                    contact.email.toLowerCase().includes(value.toLowerCase()) ||
-                    contact.phoneNumber.toLowerCase().includes(value.toLowerCase())
-                );
-            });
-            contacts(searchedContacts);
-        }
+    private searchContacts(contactListViewModel: ContactListViewModel, value: string) {
+        return contactListViewModel.fetchContacts().filter((contact: Contact) => {
+            return (
+                contact.firstName.toLowerCase().includes(value.toLowerCase()) ||
+                contact.lastName.toLowerCase().includes(value.toLowerCase()) ||
+                contact.email.toLowerCase().includes(value.toLowerCase()) ||
+                contact.phoneNumber.toLowerCase().includes(value.toLowerCase())
+            );
+        });
     }
 }
