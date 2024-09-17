@@ -12,9 +12,8 @@
     "start": "node server.js",
     "start:dev": "nodemon server.js",
     "run:dev": "npm run build:dev && npm run start:dev",
-    "run" : "npm build && npm start"
+    "run": "npm run build && npm run start"
   },
-
   "private": true,
   "devDependencies": {
     "@types/axios": "^0.14.0",
@@ -22,6 +21,9 @@
     "@types/jquery": "^3.5.30",
     "@types/knockout": "^3.4.77",
     "@types/node": "^22.5.1",
+    "@types/bootstrap": "^5.2.10",
+    "@types/page": "^1.11.9",
+    "@types/uuid": "^10.0.0",
     "autoprefixer": "^10.4.20",
     "css-loader": "^7.1.2",
     "html-webpack-plugin": "^5.6.0",
@@ -31,26 +33,24 @@
     "sass": "^1.77.8",
     "sass-loader": "^16.0.1",
     "style-loader": "^4.0.0",
+    "terser-webpack-plugin": "^5.3.10",
     "ts-loader": "^9.5.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4",
     "webpack": "^5.94.0",
     "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^5.0.4"
+    "webpack-dev-server": "^5.0.4",
+    "css-minimizer-webpack-plugin": "^7.0.0",
+    "mini-css-extract-plugin": "^2.9.1",
+    "uglify-js": "^3.19.3"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
-    "@types/bootstrap": "^5.2.10",
-    "@types/page": "^1.11.9",
-    "@types/uuid": "^10.0.0",
-    "axios": "^1.7.5",
-    "boostrap": "^2.0.0",
     "bootstrap": "^5.3.3",
-    "css-minimizer-webpack-plugin": "^7.0.0",
     "express": "^4.19.2",
+    "axios": "^1.7.5",
     "jquery": "^3.7.1",
     "knockout": "^3.5.1",
-    "mini-css-extract-plugin": "^2.9.1",
     "page": "^1.11.6",
     "uuid": "^10.0.0"
   }

@@ -1,4 +1,4 @@
-import './styles/styles.scss'
+
 import page from "page";
 
 import AlertViewModel from "./components/AlertViewModel";
