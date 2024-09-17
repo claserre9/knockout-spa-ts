@@ -107,7 +107,7 @@ export default class ContactListViewModel extends BaseViewModel{
     <table class="table">
         <thead>
             <tr>
-                <th scope="col"><input class="form-check-input" type="checkbox" data-bind="event:{ change : onChangeCheckBox }"></th>
+                <th scope="col"><input id="main-check" class="form-check-input" type="checkbox" data-bind="event:{ change : onChangeCheckBox }"></th>
                 <th scope="col">First Name</th>
                 <th scope="col">Last Name</th>
                 <th scope="col">Phone Number</th>
@@ -117,7 +117,7 @@ export default class ContactListViewModel extends BaseViewModel{
         </thead>
         <tbody data-bind="foreach:contacts">
             <tr>
-                <td><input class="form-check-input" type="checkbox" data-bind="checked: isChecked, event: {change : $parent.onCheckedItemChange}"></td>
+                <td><input class="form-check-input" type="checkbox" data-bind="checked: isChecked, event: {change : function(){$parent.onCheckedItemChange($parent)} }"></td>
                 <td data-bind="text:firstName"></td>
                 <td data-bind="text:lastName"></td>
                 <td data-bind="text:phoneNumber"></td>
@@ -261,16 +261,21 @@ export default class ContactListViewModel extends BaseViewModel{
         return contacts
     }
 
-    public onCheckedItemChange(data: any, event: Event) {
+    public onCheckedItemChange(data: any) {
+        const { contacts, countIsChecked } = data as ContactListViewModel;
 
-        console.log(this.countIsChecked());
+        const countChecked = countIsChecked();
+        const totalContacts = contacts().length;
+        const mainCheckElement = document.getElementById('main-check');
 
-        if(this.countIsChecked.length > 0 && this.countIsChecked.length < this.contacts.length){
+        if (!mainCheckElement) return;
+
+        // @ts-ignore
+        mainCheckElement.indeterminate = countChecked > 0 && countChecked < totalContacts;
+
+        if (countChecked === 0 || countChecked === totalContacts) {
             // @ts-ignore
-            event.target.indeterminate = true
-        }else if(this.countIsChecked()) {
-            // @ts-ignore
-            event.target.indeterminate = false
+            mainCheckElement.indeterminate = false;
         }
     }
 }
