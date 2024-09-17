@@ -5,8 +5,9 @@
     "esModuleInterop": true,
     "strict": true,
     "skipLibCheck": true,
-    "rootDirs": ["src", "."], // Adding root directories for better path resolution
-    "outDir": "dist",        // Specify output directory for both server and client
+    "rootDirs": ["src", "."],
+    "outDir": "dist",
+    "sourceMap": true
   },
   "include": ["src/**/*", "server.ts"],
   "exclude": ["node_modules"]

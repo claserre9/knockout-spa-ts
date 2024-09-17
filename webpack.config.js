@@ -4,6 +4,7 @@ const autoprefixer = require('autoprefixer');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin'); // Ensure clean builds
 
 module.exports = (env, argv) => {
     const isProduction = argv.mode === 'production';
@@ -14,7 +15,8 @@ module.exports = (env, argv) => {
             style: './src/style.ts',
         },
         mode: isProduction ? 'production' : 'development',
-        devtool: !isProduction ? 'cheap-module-source-map' : false,
+        devtool: !isProduction ? 'cheap-module-source-map' : false, // Best for dev
+        cache: !isProduction, // Use cache for faster development builds
         module: {
             rules: [
                 {
@@ -56,7 +58,7 @@ module.exports = (env, argv) => {
         output: {
             filename: isProduction ? '[name].[contenthash].bundle.js' : '[name].bundle.js',
             path: path.resolve(__dirname, 'public/dist'),
-            clean: true,
+            clean: true, // Automatically clean the output directory
         },
         optimization: {
             minimize: isProduction,
@@ -65,9 +67,9 @@ module.exports = (env, argv) => {
                 new TerserPlugin({
                     minify: TerserPlugin.uglifyJsMinify,
                     terserOptions: {
-                        compress: true
+                        compress: true,
                     },
-                    parallel: true
+                    parallel: true,
                 }),
             ],
             splitChunks: {
@@ -85,13 +87,15 @@ module.exports = (env, argv) => {
             new HtmlWebpackPlugin({
                 template: './src/index.html',
                 filename: '../index.html',
+                minify: isProduction ? { collapseWhitespace: true, removeComments: true } : false,
             }),
             new MiniCssExtractPlugin({
                 filename: isProduction ? '[name].[contenthash].css' : '[name].css',
             }),
+            new CleanWebpackPlugin(), // Ensures clean builds
         ],
         stats: {
             warnings: false,
-        }
+        },
     };
 };
