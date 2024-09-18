@@ -9,17 +9,13 @@
     "build:server": "tsc --project tsconfig.server.json",
     "build": "npm run build:client && npm run build:server",
     "build:dev": "npm run build:client:dev && npm run build:server",
-    "start": "node server.js",
-    "start:dev": "nodemon server.js",
-    "run:dev": "npm run build:dev && npm run start:dev",
-    "run": "npm run build && npm run start"
+    "start": "npm run build && node server.js",
+    "start:dev": "npm run build:dev && nodemon server.js"
   },
   "private": true,
   "devDependencies": {
-    "@types/axios": "^0.14.0",
     "@types/bootstrap": "^5.2.10",
     "@types/express": "^4.17.21",
-    "@types/jquery": "^3.5.30",
     "@types/knockout": "^3.4.77",
     "@types/node": "^22.5.1",
     "@types/page": "^1.11.9",
@@ -37,7 +33,6 @@
     "sass-loader": "^16.0.1",
     "style-loader": "^4.0.0",
     "terser-webpack-plugin": "^5.3.10",
-    "thread-loader": "^4.0.3",
     "ts-loader": "^9.5.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4",
@@ -48,10 +43,8 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
-    "axios": "^1.7.5",
     "bootstrap": "^5.3.3",
     "express": "^4.19.2",
-    "jquery": "^3.7.1",
     "knockout": "^3.5.1",
     "page": "^1.11.6",
     "uuid": "^10.0.0"

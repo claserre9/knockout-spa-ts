@@ -63,7 +63,7 @@ module.exports = (env, argv) => {
         output: {
             filename: isProduction ? '[name].[contenthash].bundle.js' : '[name].bundle.js',
             path: path.resolve(__dirname, 'public/dist'),
-            clean: true, // Automatically clean the output directory
+            clean: true,
         },
         optimization: {
             minimize: isProduction,
@@ -97,7 +97,7 @@ module.exports = (env, argv) => {
             new MiniCssExtractPlugin({
                 filename: isProduction ? '[name].[contenthash].css' : '[name].css',
             }),
-            new CleanWebpackPlugin(), // Ensures clean builds
+            new CleanWebpackPlugin(),
         ],
         stats: {
             warnings: false,
