@@ -21,8 +21,13 @@ module.exports = (env, argv) => {
             rules: [
                 {
                     test: /\.tsx?$/,
-                    use: 'ts-loader',
-                    exclude: /node_modules/,
+                    use: {
+                        loader: 'ts-loader',
+                        options: {
+                            configFile: !isProduction ? 'tsconfig.dev.json' : 'tsconfig.prod.json'
+                        }
+                    },
+                    exclude: /node_modules/
                 },
                 {
                     test: /\.(scss|css)$/,
